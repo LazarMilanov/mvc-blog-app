@@ -1,0 +1,49 @@
+﻿@model MVCBlogApp.Models.Post
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<article class="media content-section">
+    <img class="rounded-circle article-img" src="@Url.Content(Model.Author.ProfileImage)">
+    <div class="media-body">
+        <div class="article-metadata">
+            <a class="mr-2" href="#">@Html.DisplayFor(model => model.Author.Username)</a>
+            <small class="text-muted">@Convert.ToString(string.Format("{0:dd/MM/yyyy}", Model.DatePosted))</small>
+            @if (HttpContext.Current.Session["UserID"] != null)
+            {
+                if (Model.Author.UserID == (int)HttpContext.Current.Session["UserID"])
+                {
+                    <a class="btn btn-secondary btn-sm mt-1 mb-1" href="@Url.Action("Edit", "Posts", new { id = Model.PostID })"><i class="fa fa-pencil fa-lg mr-2"></i>Edit</a>
+                    <button type="button" class="btn btn-danger btn-sm m-1" data-toggle="modal" data-target="#deleteModal"><i class="fa fa-trash-o fa-lg mr-2"></i>Delete</button>
+                }
+            }
+        </div>
+        <h2><a class="article-title" href="#">@Html.DisplayFor(model => model.Title)</a></h2>
+        <p class="article-content">@Html.Raw(Model.Content)</p>
+    </div>
+</article>
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Are you sure you want to delete this post?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                @using (Html.BeginForm("Delete", "Posts", new { id = Model.PostID }, FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    <input class="btn btn-danger" type="submit" value="Delete">
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

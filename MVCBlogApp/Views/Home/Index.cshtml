@@ -1,0 +1,49 @@
+﻿@model IEnumerable<MVCBlogApp.Models.Post>
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+@if (Model != null)
+{
+    foreach (var item in Model)
+    {
+        <article class="media content-section">
+            <img class="rounded-circle article-img" src="@Url.Content(item.Author.ProfileImage)">
+            <div class="media-body">
+                <div class="article-metadata">
+                    @Html.ActionLink(item.Author.Username, "UserPosts", "Posts", new { username = item.Author.Username }, new { @class = "mr-2" })
+                    <small class="text-muted">@Convert.ToString(string.Format("{0:dd/MM/yyyy}", item.DatePosted))</small>
+                </div>
+                <h2>@Html.ActionLink(item.Title, "Details", "Posts", new { id = item.PostID }, new { @class = "article-title" })</h2>
+                <p class="article-content">@Html.Raw(item.Content)</p>
+            </div>
+        </article>
+    }
+    @*for (int i = 1; i <= ViewBag.pageCount; i++)
+        {
+            if (i == ViewBag.currentPage)
+            {
+                @Html.ActionLink(i.ToString(), "Index", "Home", routeValues: new { page = i }, htmlAttributes: new { @class = "btn btn-info mb-4 ml-1 mr-1" })
+            }
+            else
+            {
+                @Html.ActionLink(i.ToString(), "Index", "Home", routeValues: new { page = i }, htmlAttributes: new { @class = "btn btn-outline-info mb-4 ml-1 mr-1" })
+            }
+    }*@
+    @Html.ActionLink("First", "Index", "Home", routeValues: new { page = 1 }, htmlAttributes: new { @class = "btn btn-outline-info mb-4 ml-1 mr-2" })
+    @Html.ActionLink("<", "Index", "Home", routeValues: new { page = ViewBag.currentPage - 1 }, htmlAttributes: new { @class = "btn btn-outline-info mb-4 ml-1 mr-1" })
+    @Html.ActionLink(((int)ViewBag.currentPage).ToString(), "Index", "Home", routeValues: new { page = ViewBag.currentPage }, htmlAttributes: new { @class = "btn btn-info mb-4 ml-1 mr-1" })
+    @Html.ActionLink(">", "Index", "Home", routeValues: new { page = ViewBag.currentPage + 1 }, htmlAttributes: new { @class = "btn btn-outline-info mb-4 ml-1 mr-1" })
+    @Html.ActionLink("Last", "Index", "Home", routeValues: new { page = (int)ViewBag.pageCount }, htmlAttributes: new { @class = "btn btn-outline-info mb-4 ml-2 mr-1" })
+
+}
+else
+{
+    <h2 class="article-title">No posts yet</h2>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,25 @@
+﻿@model IEnumerable<MVCBlogApp.Models.Post>
+@{
+    ViewBag.Title = "UserPosts";
+}
+
+<h2>@ViewBag.User's posts (@ViewBag.PostCount)</h2>
+
+@foreach (var item in Model)
+{
+    <article class="media content-section">
+        <img class="rounded-circle article-img" src="@Url.Content(item.Author.ProfileImage)">
+        <div class="media-body">
+            <div class="article-metadata">
+                <a class="mr-2" href="#">@Html.DisplayFor(modelitem => item.Author.Username)</a>
+                <small class="text-muted">@Convert.ToString(string.Format("{0:dd/MM/yyyy}", item.DatePosted))</small>
+            </div>
+            <h2>@Html.ActionLink(item.Title, "Details", "Posts", new { id = item.PostID }, new { @class = "article-title" })</h2>
+            <p class="article-content">@Html.DisplayFor(modelitem => item.Content)</p>
+        </div>
+    </article>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

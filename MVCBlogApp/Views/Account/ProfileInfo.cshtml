@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "Profile";
+}
+<div class="content-section">
+    <div class="media">
+        <img class="rounded-circle account-img" src="@Url.Content((string)HttpContext.Current.Session["ProfileImage"])">
+        <div class="media-body">
+            <h2 class="account-heading">@HttpContext.Current.Session["Username"]</h2>
+            <p class="text-secondary">@HttpContext.Current.Session["Email"]</p>
+            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="@Url.Action("UpdateInfo", "Account", new { id = @HttpContext.Current.Session["UserID"] })"><i class="fa fa-pencil fa-lg mr-2"></i>Edit Info</a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
